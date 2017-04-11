@@ -2,7 +2,7 @@ var poke = [
 {
   "id": 1,
   "name": "Bulbasaur",
-  "type": [ "grass", "posion" ],
+  "type": [ "grass", "poison" ],
   "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
 },
 {
@@ -14,7 +14,7 @@ var poke = [
 {
   "id": 15,
   "name": "Beedrill",
-  "type": [ "bug", "posion" ],
+  "type": [ "bug", "poison" ],
   "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png"
 },
 {
@@ -75,11 +75,15 @@ pokemons.forEach(function(li) {
 
 // With ES6 Template Literals
 var newul = document.createElement('ul');
-newul.innerHTML =
+var newpokes =
+  // poke.map(function(pokemon) { return `<li>...</li>` }).join(...)
   poke.map(pokemon => `<li>
                         <img src="${pokemon.sprite}">
                         <label>${pokemon.name}</label>
                       </li>`
   ).join('\n');
 
+console.log(newpokes);
+
+newul.innerHTML = newpokes;
 ul.parentNode.replaceChild(newul, ul);
