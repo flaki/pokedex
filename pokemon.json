@@ -2,7 +2,7 @@
 {
   "id": 1,
   "name": "Bulbasaur",
-  "type": [ "grass", "posion" ],
+  "type": [ "grass", "poison" ],
   "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
 },
 {
@@ -14,7 +14,7 @@
 {
   "id": 15,
   "name": "Beedrill",
-  "type": [ "bug", "posion" ],
+  "type": [ "bug", "poison" ],
   "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png"
 },
 {
