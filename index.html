@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <title>Flaki's Pokedex</title>
   <style>
-  img {
+  li > img {
     max-width: 5em;
     display: block;
   }
-  label {
+  li > label {
     display: block;
     font-family: cursive;
     text-align: center;
@@ -18,6 +18,7 @@
     list-style-type: none;
     display: flex;
     flex-wrap: wrap;
+    padding: 0;
   }
   ul:empty {
     width: 100%;
@@ -37,6 +38,7 @@
     <nav>
       <a href="./">Home</a>
       <a href="./about.html">About</a>
+      <label>Search: <input name="filter" id="filter-pokemons" size="16" /></label>
     </nav>
     <main>
       <ul></ul>

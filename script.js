@@ -1,29 +1,8 @@
 // Why //? http/https universal protocol
-var POKE_API_URL = '//pokeapi.co/api/v2/pokemon/?limit=50';
+var POKE_API_URL = '//pokeapi.co/api/v2/pokemon/?limit=100';
 var POKE_SPRITE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/###.png';
 
-
-// Network API request using XMLHttpRequest
-function pokeXhr() {
-  var xhr = new XMLHttpRequest();
-
-  xhr.open('GET', POKE_API_URL);
-
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      if(xhr.status === 200) {
-        var poke = JSON.parse(xhr.responseText);
-        console.log('XHR result: ', poke);
-
-        renderPokemons(poke.results);
-      } else {
-        console.log('Error fetching API data, HTTP/'+xhr.status);
-      }
-    }
-  };
-
-  xhr.send();
-}
+var pokemonList = [];
 
 
 // Network API request using XMLHttpRequest
@@ -38,7 +17,11 @@ function pokeFetch() {
   ).then(
     poke => {
       console.log('Fetch result: ', poke);
-      renderPokemons(poke.results);
+
+      // same as:
+      // pokemonList = poke.results;
+      // renderPokemons(poke.results);
+      renderPokemons(pokemonList = poke.results);
     }
   ).catch(
     error => console.log('Error fetching API data: ', error)
@@ -46,8 +29,42 @@ function pokeFetch() {
 }
 
 
-//pokeXhr();
+// Fetch pokemon list asynchronously
 pokeFetch();
+
+
+// Check for search box
+var searchBox = document.querySelector('#filter-pokemons');
+
+// Set up event listener
+if (searchBox) {
+  // 'change' event only fires when focus leaves the input area
+  // searchBox.addEventListener('change', filterPokemons);
+  // 'input' event fires on every input
+  searchBox.addEventListener('input', filterPokemons);
+}
+
+
+function filterPokemons(event) {
+  // Current filter value
+  var filter = searchBox.value;
+
+  var filterRegex;
+  // Case insensitive search
+  filterRegex= new RegExp(searchBox.value, 'i');
+  // Limit matches to the start of the pokemon's name
+  //filterRegex = new RegExp('^'+searchBox.value, 'i');
+
+  // Filtered pokemon list
+  var filtered = pokemonList.filter(
+    // Filter only includes elements that return a truthy value for the callback
+    // match returns null when no match is found, !!match(..) is thus false
+    pokemon => !!pokemon.name.match(filterRegex)
+  );
+  console.log(filter+' matched '+filtered.length+' pokemons (of '+pokemonList.length+')');
+
+  renderPokemons(filtered);
+}
 
 
 function renderPokemons(poke) {
@@ -64,6 +81,14 @@ function renderPokemons(poke) {
   });
 
   console.log(pokemons);
+
+  // If 'pokemons' is empty...
+  if (!pokemons.length) {
+    var emptylist = document.createElement('li');
+    emptylist.innerHTML = '<em>No Pokemons found</em>';
+
+    pokemons.push(emptylist);
+  }
 
   ul.innerHTML = '';
   pokemons.forEach(function(li) {
