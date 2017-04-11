@@ -38,6 +38,8 @@ var ul = document.querySelector('main > ul');
 
 // with document.createElement
 ul.innerHTML = '';
+//= ul.children.forEach(li => ul.removeChild(li));
+
 poke.forEach(function(pokemon) {
   var li = document.createElement('li');
   var img = document.createElement('img');
