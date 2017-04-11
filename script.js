@@ -31,59 +31,27 @@ var poke = [
 },
 ];
 
-console.log(poke);
 
-var ul = document.querySelector('main > ul');
-
-
-// with document.createElement
-ul.innerHTML = '';
-poke.forEach(function(pokemon) {
-  var li = document.createElement('li');
-  var img = document.createElement('img');
-  var label = document.createElement('label')
-
-  img.src = pokemon.sprite;
-
-  // var text = document.createTextNode()
-  // text.textContent = pokemon.name;
-  // label.appendChild(text);
-  label.textContent = pokemon.name;
-
-  li.appendChild(img);
-  li.appendChild(label);
-  ul.appendChild(li);
-})
+setTimeout(function() {
+  console.log(poke);
+  renderPokemons(poke);
+}, 3000);
 
 
+function renderPokemons(poke) {
+  var ul = document.querySelector('main > ul');
 
-// With map & innerHTML
-var pokemons = poke.map(function(pokemon) {
-  var li = document.createElement('li');
-  li.innerHTML = '<img src="'+pokemon.sprite+'"><label>'+pokemon.name+'</label>';
-  return li;
-});
+  // With map & innerHTML
+  var pokemons = poke.map(function(pokemon) {
+    var li = document.createElement('li');
+    li.innerHTML = '<img src="'+pokemon.sprite+'"><label>'+pokemon.name+'</label>';
+    return li;
+  });
 
-console.log(pokemons);
+  console.log(pokemons);
 
-ul.innerHTML = '';
-pokemons.forEach(function(li) {
-  ul.appendChild(li);
-});
-
-
-
-// With ES6 Template Literals
-var newul = document.createElement('ul');
-var newpokes =
-  // poke.map(function(pokemon) { return `<li>...</li>` }).join(...)
-  poke.map(pokemon => `<li>
-                        <img src="${pokemon.sprite}">
-                        <label>${pokemon.name}</label>
-                      </li>`
-  ).join('\n');
-
-console.log(newpokes);
-
-newul.innerHTML = newpokes;
-ul.parentNode.replaceChild(newul, ul);
+  ul.innerHTML = '';
+  pokemons.forEach(function(li) {
+    ul.appendChild(li);
+  });
+}
