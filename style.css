@@ -26,8 +26,15 @@ li {
   position: relative;
   border-radius: 3%;
   overflow: hidden;
-}
 
+  background-image: url(http://orig04.deviantart.net/f60e/f/2017/042/0/7/pokeball_gif_by_termatior0-dayo3ow.gif);
+  background-size: 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  height: 8em;
+  width: 6em;
+}
 li > label {
   padding: .25em;
   text-shadow: 0 -2px #eee;
@@ -76,3 +83,23 @@ i.dragon { background: linear-gradient(to bottom, #6f35fc,transparent); }
 i.dark { background: linear-gradient(to bottom, #705746,transparent); }
 i.steel { background: linear-gradient(to bottom, #b7b7ce,transparent); }
 i.fairy { background: linear-gradient(to bottom, #d685ad,transparent); }
+
+
+/* Loaded sprite animation */
+li {
+  transition: all .7s ease-in;
+}
+li.loaded {
+  background-position: 0 -10em;
+  background-size: 30%;
+}
+
+li > img {
+  opacity: 0;
+  transition: all 1s ease .4s;
+  min-height: 6em;
+}
+
+li.loaded > img {
+  opacity: 1;
+}

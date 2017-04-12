@@ -1,9 +1,10 @@
 // Why //? http/https universal protocol
-var POKE_API_URL = '//pokeapi.co/api/v2/pokemon/?limit=100';
+var POKE_API_URL = '//pokeapi.co/api/v2/pokemon/?limit=20';
 var POKE_SPRITE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/###.png';
 
 var pokemonList = [];
 var pokemonTypes;
+var pokemonSprites = {};
 
 
 // Network API request using XMLHttpRequest
@@ -29,6 +30,27 @@ function pokeFetch() {
   )
 }
 
+// Load pokemon sprites
+function pokeSprites() {
+  pokemonSprites = {};
+  pokemonList.forEach(pokemon => {
+    let pokemonId = parseInt( pokemon.url.match(/pokemon\/(\d+)/)[1], 10);
+    let imgsrc = POKE_SPRITE_URL.replace('###',pokemonId);
+
+    pokemonSprites[imgsrc] = false;
+    img = document.createElement('img');
+    img.onload = function() {
+      pokemonSprites[imgsrc] = true;
+
+      // Update rendered document
+      document.querySelector('img[src="'+imgsrc+'"]').parentNode.classList.add('loaded');
+    };
+
+    // Preload sprite
+    img.src = imgsrc;
+  });
+}
+
 // Get pokemon types
 function pokeTypes() {
   return fetch('poketypes.min.json').then(r => r.json()).then(result => {
@@ -40,7 +62,7 @@ function pokeTypes() {
 
 // Fetch pokemon list asynchronously
 // Then fetch types and add type data async as well
-pokeFetch().then(pokeTypes);
+pokeFetch().then(pokeSprites).then(pokeTypes);
 
 
 // Check for search box
@@ -85,11 +107,15 @@ function renderPokemons(poke) {
     let li = document.createElement('li');
     let pokemonId = parseInt( pokemon.url.match(/pokemon\/(\d+)/)[1], 10);
 
+    let imgsrc = POKE_SPRITE_URL.replace('###',pokemonId);
+    let spriteLoaded = !!pokemonSprites[imgsrc];
+
     // Capitalization of pokemon.name is done in CSS, instead of in JS
     let content = `
-      <img src="${POKE_SPRITE_URL.replace('###',pokemonId)}">
+      <img src="${imgsrc}">
       <label>${pokemon.name}</label>
     `;
+    if (spriteLoaded) li.className = 'loaded';
 
     // Type
     if (pokemonTypes && pokemonTypes[pokemon.name]) {
