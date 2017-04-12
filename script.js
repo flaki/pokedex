@@ -1,5 +1,7 @@
 // Why //? http/https universal protocol
-var POKE_API_URL = '//pokeapi.co/api/v2/pokemon/?limit=20';
+var POKE_COUNT = 20;
+
+var POKE_API_URL = '//pokeapi.co/api/v2/pokemon/?limit='+POKE_COUNT;
 var POKE_SPRITE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/###.png';
 
 var pokemonList = [];
@@ -9,8 +11,10 @@ var pokemonSprites = {};
 
 // Network API request using XMLHttpRequest
 function pokeFetch() {
+  let offset = pokemonList.length;
+
   return fetch(
-    POKE_API_URL
+    POKE_API_URL+'&offset='+offset
 
   // = .then(function(result) { return result.json() })
   ).then(
@@ -20,10 +24,8 @@ function pokeFetch() {
     poke => {
       console.log('Fetch result: ', poke);
 
-      // same as:
-      // pokemonList = poke.results;
-      // renderPokemons(poke.results);
-      renderPokemons(pokemonList = poke.results);
+      poke.results.forEach(p => pokemonList.push(p));
+      renderPokemons(pokemonList);
     }
   ).catch(
     error => console.log('Error fetching API data: ', error)
@@ -32,22 +34,24 @@ function pokeFetch() {
 
 // Load pokemon sprites
 function pokeSprites() {
-  pokemonSprites = {};
   pokemonList.forEach(pokemon => {
     let pokemonId = parseInt( pokemon.url.match(/pokemon\/(\d+)/)[1], 10);
     let imgsrc = POKE_SPRITE_URL.replace('###',pokemonId);
 
-    pokemonSprites[imgsrc] = false;
-    img = document.createElement('img');
-    img.onload = function() {
-      pokemonSprites[imgsrc] = true;
+    // Only preload images once
+    if (!pokemonSprites[imgsrc]) {
+      pokemonSprites[imgsrc] = false;
+      img = document.createElement('img');
+      img.onload = function() {
+        pokemonSprites[imgsrc] = true;
 
-      // Update rendered document
-      document.querySelector('img[src="'+imgsrc+'"]').parentNode.classList.add('loaded');
-    };
+        // Update rendered document
+        document.querySelector('img[src="'+imgsrc+'"]').parentNode.classList.add('loaded');
+      };
 
-    // Preload sprite
-    img.src = imgsrc;
+      // Preload sprite
+      img.src = imgsrc;
+    }
   });
 }
 
@@ -115,7 +119,7 @@ function renderPokemons(poke) {
       <img src="${imgsrc}">
       <label>${pokemon.name}</label>
     `;
-    if (spriteLoaded) li.className = 'loaded';
+    li.classList.add(spriteLoaded ? 'loaded' : 'loading');
 
     // Type
     if (pokemonTypes && pokemonTypes[pokemon.name]) {
@@ -136,6 +140,25 @@ function renderPokemons(poke) {
     emptylist.innerHTML = '<em>No Pokemons found</em>';
 
     pokemons.push(emptylist);
+  }
+
+  // Show "load more" button?
+  if (pokemonList.length < 160) {
+    var buttonbox = document.createElement('li');
+    var button = document.createElement('button');
+
+    button.textContent = "Load more...";
+    button.addEventListener('click', e => {
+      buttonbox.classList.add('loading');
+      button.disabled = true;
+
+      setTimeout(function() {
+        pokeFetch().then(pokeSprites)
+      }, 100)
+    });
+
+    buttonbox.appendChild(button);
+    pokemons.push(buttonbox);
   }
 
   ul.innerHTML = '';

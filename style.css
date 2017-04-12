@@ -26,7 +26,8 @@ li {
   position: relative;
   border-radius: 3%;
   overflow: hidden;
-
+}
+li.loading {
   background-image: url(http://orig04.deviantart.net/f60e/f/2017/042/0/7/pokeball_gif_by_termatior0-dayo3ow.gif);
   background-size: 80%;
   background-position: center;
