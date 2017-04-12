@@ -5,6 +5,9 @@ function fetchStuff() {
     fetch('https://pokeapi.co/api/v2/type/'+(i+1)).then(r => r.json()).then(result => {
       console.log('i = ', i);
       stuff[i] = result;
+      // alternatively:
+      // stuff.push(result);
+      // would fix the issue, but would not respect our inbound order
     });
   }
 
@@ -12,7 +15,7 @@ function fetchStuff() {
 }
 
 // Fixed with ES6's for..of fresh-bindings-on-iteration
-function fetchStuffForOf() {
+function fetchStuffForFreshBinding() {
   var stuff = [];
 
   for (let i = 0; i < 3; i++) {
@@ -32,8 +35,8 @@ function fetchStuffPromiseAll() {
   var promises;
   // same as:
   // promises = [
-  //   fetch('https://pokeapi.co/api/v2/type/1').then(r => r.json())
-  //   fetch('https://pokeapi.co/api/v2/type/2').then(r => r.json())
+  //   fetch('https://pokeapi.co/api/v2/type/1').then(r => r.json()),
+  //   fetch('https://pokeapi.co/api/v2/type/2').then(r => r.json()),
   //   fetch('https://pokeapi.co/api/v2/type/3').then(r => r.json())
   // ];
 
@@ -75,7 +78,7 @@ var stuff;
 
 // Fetch stuff
 //stuff = fetchStuff();
-//stuff = fetchStuffForOf();
+//stuff = fetchStuffForFreshBinding();
 //stuff = fetchStuffPromiseAll();
 stuff = fetchStuffBind();
 
