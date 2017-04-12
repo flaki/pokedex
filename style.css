@@ -1,0 +1,78 @@
+li > img {
+  display: block;
+  margin: auto;
+}
+li > label {
+  display: block;
+  font-family: cursive;
+  text-align: center;
+  text-transform: capitalize;
+}
+ul {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+}
+ul:empty {
+  width: 100%;
+  min-height: 5em;
+  background: url(loading.gif) center center no-repeat;
+}
+
+li {
+  padding: 0;
+  margin: .5em;
+  position: relative;
+  border-radius: 3%;
+  overflow: hidden;
+}
+
+li > label {
+  padding: .25em;
+  text-shadow: 0 -2px #eee;
+}
+
+li > span {
+  /* cover whole item */
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+
+  /* display under */
+  z-index: -1;
+
+  display: flex;
+}
+
+li > span > i {
+  display: block;
+  background: rgba(0,0,0,.1);
+  flex: 1;
+
+  font-size: .5em;
+  text-align: center;
+  padding: .25em;
+  color: white;
+  text-shadow: 0 1px 1px #333;
+}
+
+/* Type to color mappings */
+i.normal { background: linear-gradient(to bottom, #a8a77a,transparent); }
+i.fire { background: linear-gradient(to bottom, #ee8130,transparent); }
+i.water { background: linear-gradient(to bottom, #6390f0,transparent); }
+i.electric { background: linear-gradient(to bottom, #f7d02c,transparent); }
+i.grass { background: linear-gradient(to bottom, #7ac74c,transparent); }
+i.ice { background: linear-gradient(to bottom, #96d9d6,transparent); }
+i.fighting { background: linear-gradient(to bottom, #c22e28,transparent); }
+i.poison { background: linear-gradient(to bottom, #a33ea1,transparent); }
+i.ground { background: linear-gradient(to bottom, #e2bf65,transparent); }
+i.flying { background: linear-gradient(to bottom, #a98ff3,transparent); }
+i.psychic { background: linear-gradient(to bottom, #f95587,transparent); }
+i.bug { background: linear-gradient(to bottom, #a6b91a,transparent); }
+i.rock { background: linear-gradient(to bottom, #b6a136,transparent); }
+i.ghost { background: linear-gradient(to bottom, #735797,transparent); }
+i.dragon { background: linear-gradient(to bottom, #6f35fc,transparent); }
+i.dark { background: linear-gradient(to bottom, #705746,transparent); }
+i.steel { background: linear-gradient(to bottom, #b7b7ce,transparent); }
+i.fairy { background: linear-gradient(to bottom, #d685ad,transparent); }

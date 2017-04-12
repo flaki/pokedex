@@ -3,11 +3,12 @@ var POKE_API_URL = '//pokeapi.co/api/v2/pokemon/?limit=100';
 var POKE_SPRITE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/###.png';
 
 var pokemonList = [];
+var pokemonTypes;
 
 
 // Network API request using XMLHttpRequest
 function pokeFetch() {
-  fetch(
+  return fetch(
     POKE_API_URL
 
   // = .then(function(result) { return result.json() })
@@ -28,9 +29,18 @@ function pokeFetch() {
   )
 }
 
+// Get pokemon types
+function pokeTypes() {
+  return fetch('poketypes.min.json').then(r => r.json()).then(result => {
+    pokemonTypes = result;
+
+    renderPokemons(pokemonList);
+  });
+}
 
 // Fetch pokemon list asynchronously
-pokeFetch();
+// Then fetch types and add type data async as well
+pokeFetch().then(pokeTypes);
 
 
 // Check for search box
@@ -68,15 +78,27 @@ function filterPokemons(event) {
 
 
 function renderPokemons(poke) {
-  var ul = document.querySelector('main > ul');
+  let ul = document.querySelector('main > ul');
 
   // With map & innerHTML
-  var pokemons = poke.map(function(pokemon) {
-    var li = document.createElement('li');
-    var pokemonId = parseInt( pokemon.url.match(/pokemon\/(\d+)/)[1], 10);
+  let pokemons = poke.map(function(pokemon) {
+    let li = document.createElement('li');
+    let pokemonId = parseInt( pokemon.url.match(/pokemon\/(\d+)/)[1], 10);
 
     // Capitalization of pokemon.name is done in CSS, instead of in JS
-    li.innerHTML = '<img src="'+POKE_SPRITE_URL.replace('###',pokemonId)+'"><label>'+pokemon.name+'</label>';
+    let content = `
+      <img src="${POKE_SPRITE_URL.replace('###',pokemonId)}">
+      <label>${pokemon.name}</label>
+    `;
+
+    // Type
+    if (pokemonTypes && pokemonTypes[pokemon.name]) {
+      content += '<span>'+pokemonTypes[pokemon.name].map(
+        type => `<i class="${type}"'>${type}</i>`
+      ).join('')+'<span>';
+    }
+
+    li.innerHTML = content;
     return li;
   });
 
