@@ -1,0 +1,49 @@
+<!doctype HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Flaki's Pokedex</title>
+  <style>
+  li > img {
+    max-width: 5em;
+    display: block;
+  }
+  li > label {
+    display: block;
+    font-family: cursive;
+    text-align: center;
+    text-transform: capitalize;
+  }
+  ul {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+  }
+  ul:empty {
+    width: 100%;
+    min-height: 5em;
+    background: url(loading.gif) center center no-repeat;
+  }
+  li {
+    padding: 0;
+  }
+  </style>
+</head>
+<body>
+  <div>
+    <header>
+      <h1>Flaki's Pokedex</h1>
+    </header>
+    <nav>
+      <a href="./">Home</a>
+      <a href="./about.html">About</a>
+      <label>Search: <input name="filter" id="filter-pokemons" size="16" /></label>
+    </nav>
+    <main>
+      <ul></ul>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
